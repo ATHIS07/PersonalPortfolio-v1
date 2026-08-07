@@ -1,52 +1,49 @@
-# 🚀 Personal Portfolio Website – V1
+# Personal Portfolio Website – Version 1
 
-Welcome to **Version 1** of my personal portfolio website.
+## Overview
 
-This project represents my first complete portfolio, designed and developed to showcase my technical skills, projects, certifications, and career journey in a modern, responsive, and interactive format.
+This repository contains **Version 1** of my personal portfolio website. It serves as my professional online presence, showcasing my technical skills, projects, certifications, and career aspirations in Cloud Computing and DevOps.
 
-🌐 **Live Website:** https://athish.online
+The portfolio is built using modern web technologies and is designed to provide recruiters, hiring managers, and collaborators with a comprehensive overview of my work, technical expertise, and professional journey.
 
----
-
-## 📖 About
-
-Portfolio V1 is the foundation of my personal brand as a Computer Science Engineering student passionate about **Cloud Computing**, **AWS**, **DevOps**, and modern web technologies.
-
-This version focuses on creating a clean, professional, and responsive experience while highlighting my technical background and projects.
+**Live Website**  
+**https://athish.online**
 
 ---
 
-## ✨ Features
+## Features
 
-- Modern and responsive design
-- Interactive user interface
-- Smooth animations
-- Cloud & AWS skills showcase
-- Project portfolio section
+- Modern and responsive user interface
+- Built with Next.js and TypeScript
+- Interactive animations and smooth user experience
+- Dedicated Cloud Computing and AWS skills section
+- Professional project showcase
 - Contact section
-- Mobile-friendly layout
+- Optimized for desktop, tablet, and mobile devices
 - Deployed on Vercel
-- Custom domain integration (athish.online)
+- Connected to a custom domain with HTTPS
 
 ---
 
-## 🛠️ Tech Stack
+## Technology Stack
 
 ### Frontend
+
 - Next.js
 - React
 - TypeScript
 - CSS
 
 ### Deployment
+
 - GitHub
 - Vercel
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
-```
+```text
 src/
 ├── app/
 ├── components/
@@ -56,91 +53,99 @@ src/
 
 ---
 
-## 🚀 Local Development
+## Getting Started
 
-Clone the repository:
+### Clone the Repository
 
 ```bash
 git clone https://github.com/ATHIS07/PersonalPortfolio-v1.git
 ```
 
-Navigate into the project:
+### Navigate to the Project Directory
 
 ```bash
 cd PersonalPortfolio-v1
 ```
 
-Install dependencies:
+### Install Dependencies
 
 ```bash
 npm install
 ```
 
-Start the development server:
+### Start the Development Server
 
 ```bash
 npm run dev
 ```
 
-Open:
+The application will be available at:
 
-```
+```text
 http://localhost:3000
 ```
 
 ---
 
-## 🌍 Live Demo
+## Live Website
 
-🔗 **https://athish.online**
-
----
-
-## 🎯 Objectives
-
-- Build a professional online presence
-- Showcase technical projects
-- Demonstrate frontend development skills
-- Present cloud and DevOps expertise
-- Create a portfolio for internships and placements
+**Production:**  
+**https://athish.online**
 
 ---
 
-## 🔮 Future Plans (V2)
+## Objectives
 
-Planned improvements include:
+The primary objectives of this portfolio are to:
 
-- Enhanced UI/UX
-- Additional cloud projects
-- Blog section
+- Establish a professional online presence
+- Showcase technical projects and practical experience
+- Demonstrate frontend development capabilities
+- Highlight Cloud Computing and AWS expertise
+- Support internship and placement opportunities
+
+---
+
+## Future Enhancements
+
+Future versions of this portfolio will include:
+
+- Additional cloud-based projects
 - Performance optimizations
-- Dark/Light theme toggle
-- More interactive animations
 - Improved accessibility
-- SEO enhancements
+- Enhanced SEO
+- Blog section
+- Expanded technical documentation
+- Continuous UI and UX improvements
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Athish M**
 
 Computer Science Engineering Student
 
-Aspiring Cloud & DevOps Engineer
+**Cloud Engineer | DevOps Enthusiast**
 
-🌐 Website: https://athish.online
+**Website**  
+https://athish.online
 
-GitHub: https://github.com/ATHIS07
-
----
-
-## ⭐ Version
-
-**Current Release:** Portfolio V1
-
-This repository contains the first public release of my personal portfolio. Future improvements and new features will be introduced in later versions.
+**GitHub**  
+https://github.com/ATHIS07
 
 ---
 
-If you found this project interesting, consider giving it a ⭐.
+## Version
+
+**Current Release:** Version 1
+
+This repository represents the first public release of my personal portfolio. Future versions will introduce new features, projects, performance improvements, and design enhancements as I continue to develop my technical skills and professional experience.
+
+---
+
+## License
+
+Copyright © 2026 Athish M.
+
+This project is intended for portfolio and educational purposes. Unauthorized copying, redistribution, or commercial use of the source code without permission is prohibited.
