@@ -1,36 +1,146 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Personal Portfolio Website – V1
 
-## Getting Started
+Welcome to **Version 1** of my personal portfolio website.
 
-First, run the development server:
+This project represents my first complete portfolio, designed and developed to showcase my technical skills, projects, certifications, and career journey in a modern, responsive, and interactive format.
+
+🌐 **Live Website:** https://athish.online
+
+---
+
+## 📖 About
+
+Portfolio V1 is the foundation of my personal brand as a Computer Science Engineering student passionate about **Cloud Computing**, **AWS**, **DevOps**, and modern web technologies.
+
+This version focuses on creating a clean, professional, and responsive experience while highlighting my technical background and projects.
+
+---
+
+## ✨ Features
+
+- Modern and responsive design
+- Interactive user interface
+- Smooth animations
+- Cloud & AWS skills showcase
+- Project portfolio section
+- Contact section
+- Mobile-friendly layout
+- Deployed on Vercel
+- Custom domain integration (athish.online)
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- Next.js
+- React
+- TypeScript
+- CSS
+
+### Deployment
+- GitHub
+- Vercel
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+├── components/
+├── public/
+└── ...
+```
+
+---
+
+## 🚀 Local Development
+
+Clone the repository:
+
+```bash
+git clone https://github.com/ATHIS07/PersonalPortfolio-v1.git
+```
+
+Navigate into the project:
+
+```bash
+cd PersonalPortfolio-v1
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🌍 Live Demo
 
-To learn more about Next.js, take a look at the following resources:
+🔗 **https://athish.online**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎯 Objectives
 
-## Deploy on Vercel
+- Build a professional online presence
+- Showcase technical projects
+- Demonstrate frontend development skills
+- Present cloud and DevOps expertise
+- Create a portfolio for internships and placements
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔮 Future Plans (V2)
+
+Planned improvements include:
+
+- Enhanced UI/UX
+- Additional cloud projects
+- Blog section
+- Performance optimizations
+- Dark/Light theme toggle
+- More interactive animations
+- Improved accessibility
+- SEO enhancements
+
+---
+
+## 👨‍💻 Author
+
+**Athish M**
+
+Computer Science Engineering Student
+
+Aspiring Cloud & DevOps Engineer
+
+🌐 Website: https://athish.online
+
+GitHub: https://github.com/ATHIS07
+
+---
+
+## ⭐ Version
+
+**Current Release:** Portfolio V1
+
+This repository contains the first public release of my personal portfolio. Future improvements and new features will be introduced in later versions.
+
+---
+
+If you found this project interesting, consider giving it a ⭐.
