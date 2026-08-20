@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, FolderGit2, ExternalLink, Activity } from 'lucide-react';
+import { Github, FolderGit2, ExternalLink, Activity, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import TiltCard from '@/components/TiltCard';
 import TerminalTyper from '@/components/TerminalTyper';
@@ -13,10 +13,31 @@ interface Project {
   description: string;
   tech: string[];
   githubUrl?: string;
+  liveUrl?: string;
+  note?: string;
   terminalCommand: string;
 }
 
 const PROJECTS: Project[] = [
+  {
+    title: 'AWS Cloud Portfolio Deployment - v1',
+    status: 'Completed',
+    description:
+      'Deployed a production-ready personal portfolio using Next.js and AWS, featuring private Amazon S3 static hosting, CloudFront global CDN distribution, Route 53 DNS routing, and ACM SSL certificate management for high-performance delivery.',
+    tech: ['Next.js', 'Amazon S3', 'CloudFront', 'Route 53', 'ACM', 'HTTPS'],
+    githubUrl: 'https://github.com/ATHIS07/PersonalPortfolio-v1',
+    note: 'Note: You are currently viewing this exact live website right now!',
+    terminalCommand: '$ aws cloudfront create-invalidation --distribution-id E123 --paths "/*"',
+  },
+  {
+    title: 'Automated CI/CD Pipeline',
+    status: 'Completed',
+    description:
+      'Built an automated CI/CD pipeline using GitHub Actions to build, test, and deploy a web application directly to an AWS EC2 Linux server through secure SSH connection and encrypted secret management.',
+    tech: ['GitHub Actions', 'AWS EC2', 'Linux', 'Git', 'GitHub', 'SSH'],
+    githubUrl: 'https://github.com/ATHIS07?tab=repositories',
+    terminalCommand: '$ git push origin main && gh workflow run deploy.yml',
+  },
   {
     title: 'PipeWatch – CI/CD Pipeline Monitoring Dashboard',
     status: 'Completed',
@@ -147,8 +168,15 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {project.githubUrl ? (
-                  <div className="relative z-10 pt-4 border-t border-slate-800/80 mt-auto min-h-[52px] flex items-center">
+                {project.note && (
+                  <div className="relative z-10 my-3 p-3 rounded-xl bg-sky-500/10 border border-sky-500/25 text-sky-300 text-xs font-mono flex items-center gap-2 shadow-inner">
+                    <Sparkles className="h-4 w-4 text-sky-400 shrink-0" />
+                    <span>{project.note}</span>
+                  </div>
+                )}
+
+                <div className="relative z-10 pt-4 border-t border-slate-800/80 mt-auto min-h-[52px] flex flex-wrap items-center gap-3">
+                  {project.githubUrl && (
                     <a
                       href={project.githubUrl}
                       target="_blank"
@@ -157,13 +185,23 @@ export default function Projects() {
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-sky-500/40 text-xs font-mono font-semibold transition-all hover:scale-105 shadow-lg"
                     >
                       <Github className="h-4 w-4 text-sky-400" />
-                      <span>GitHub Repository</span>
+                      <span>GitHub</span>
                       <ExternalLink className="h-3 w-3" />
                     </a>
-                  </div>
-                ) : (
-                  <div className="relative z-10 pt-4 border-t border-slate-800/80 mt-auto min-h-[52px]" />
-                )}
+                  )}
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={triggerConfetti}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:text-white hover:bg-sky-500/20 hover:border-sky-400 text-xs font-mono font-semibold transition-all hover:scale-105 shadow-lg"
+                    >
+                      <ExternalLink className="h-4 w-4 text-sky-400" />
+                      <span>Live Portfolio</span>
+                    </a>
+                  )}
+                </div>
               </TiltCard>
             </motion.div>
           ))}
