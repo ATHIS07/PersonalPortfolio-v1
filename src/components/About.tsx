@@ -69,7 +69,7 @@ export default function About() {
             <TiltCard className="glass-panel p-4 sm:p-6 rounded-3xl border border-white/15 shadow-2xl relative overflow-hidden group">
               <div className="relative h-64 md:h-80 w-full rounded-2xl overflow-hidden border border-white/10 shadow-inner">
                 <img
-                  src="/sequence/ezgif-frame-078.png"
+                  src="/sequence/ezgif-frame-078.webp"
                   alt="Athish M - Profile Portrait"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                 />

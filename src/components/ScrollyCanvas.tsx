@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useScroll, useTransform, motion, useMotionValueEvent } from 'framer-motion';
+import { useScroll, useTransform, motion, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 
 interface ScrollyCanvasProps {
   frameCount?: number;
@@ -19,7 +19,9 @@ export default function ScrollyCanvas({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameIndexRef = useRef<number>(0);
-  
+  const loadedCountRef = useRef<number>(0);
+  const rafIdRef = useRef<number | null>(null);
+
   const [loadedCount, setLoadedCount] = useState<number>(0);
   const [isReady, setIsReady] = useState<boolean>(false);
 
@@ -32,46 +34,83 @@ export default function ScrollyCanvas({
   // Map 0 -> 1 progress to 0 -> (frameCount - 1)
   const frameIndex = useTransform(scrollYProgress, [0, 1], [0, frameCount - 1]);
 
-  // Preload images
+  // FULL PRELOAD: Load and decode all 78 WebP frames before starting portfolio interaction
   useEffect(() => {
     let isMounted = true;
-    const images: HTMLImageElement[] = [];
-    let count = 0;
+    const images: HTMLImageElement[] = new Array(frameCount);
+    imagesRef.current = images;
+    loadedCountRef.current = 0;
 
-    for (let i = 1; i <= frameCount; i++) {
-      const img = new Image();
-      const frameNum = String(i).padStart(3, '0');
-      img.src = `/sequence/ezgif-frame-${frameNum}.png`;
+    const loadSingleFrame = (i: number): Promise<void> => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        const frameNum = String(i + 1).padStart(3, '0');
+        img.src = `/sequence/ezgif-frame-${frameNum}.webp`;
 
-      img.onload = () => {
-        if (!isMounted) return;
-        count++;
-        setLoadedCount(count);
-        if (count === frameCount) {
-          setIsReady(true);
-        }
-      };
+        const onComplete = async () => {
+          if (!isMounted) {
+            resolve();
+            return;
+          }
 
-      img.onerror = () => {
-        if (!isMounted) return;
-        count++;
-        setLoadedCount(count);
-        if (count === frameCount) {
-          setIsReady(true);
-        }
-      };
+          // Off-main-thread image decoding before canvas rendering
+          try {
+            if ('decode' in img) {
+              await img.decode();
+            }
+          } catch {
+            // Ignore decode error and fallback to loaded image
+          }
 
-      images.push(img);
+          if (!isMounted) {
+            resolve();
+            return;
+          }
+
+          images[i] = img;
+          loadedCountRef.current++;
+          setLoadedCount(loadedCountRef.current);
+          resolve();
+        };
+
+        const onError = () => {
+          if (!isMounted) {
+            resolve();
+            return;
+          }
+          loadedCountRef.current++;
+          setLoadedCount(loadedCountRef.current);
+          resolve();
+        };
+
+        img.onload = onComplete;
+        img.onerror = onError;
+      });
+    };
+
+    // Trigger full preload of all 78 WebP frames, then wait 2 seconds after load complete
+    const promises: Promise<void>[] = [];
+    for (let i = 0; i < frameCount; i++) {
+      promises.push(loadSingleFrame(i));
     }
 
-    imagesRef.current = images;
+    Promise.all(promises).then(() => {
+      setTimeout(() => {
+        if (isMounted) {
+          setIsReady(true);
+        }
+      }, 2000);
+    });
 
     return () => {
       isMounted = false;
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
     };
   }, [frameCount]);
 
-  // Canvas render function implementing object-fit: cover logic
+  // Canvas render function drawing preloaded frame
   const renderFrame = (index: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -109,26 +148,39 @@ export default function ScrollyCanvas({
     ctx.restore();
   };
 
-  // Render initial frame once images start loading or canvas is mounted
-  useEffect(() => {
-    if (imagesRef.current[0]) {
-      renderFrame(0);
+  // Schedule render via rAF to avoid duplicate draw calls on rapid scroll
+  const scheduleRender = (targetIndex: number) => {
+    currentFrameIndexRef.current = targetIndex;
+
+    if (rafIdRef.current !== null) {
+      cancelAnimationFrame(rafIdRef.current);
     }
-  }, [loadedCount]);
+
+    rafIdRef.current = requestAnimationFrame(() => {
+      rafIdRef.current = null;
+      renderFrame(currentFrameIndexRef.current);
+    });
+  };
+
+  // Render initial frame once preloading is 100% complete
+  useEffect(() => {
+    if (isReady) {
+      scheduleRender(currentFrameIndexRef.current);
+    }
+  }, [isReady]);
 
   // Subscribe to Framer Motion scroll changes
   useMotionValueEvent(frameIndex, 'change', (latest) => {
     const targetIdx = Math.min(frameCount - 1, Math.max(0, Math.floor(latest)));
     if (targetIdx !== currentFrameIndexRef.current) {
-      currentFrameIndexRef.current = targetIdx;
-      requestAnimationFrame(() => renderFrame(targetIdx));
+      scheduleRender(targetIdx);
     }
   });
 
   // Handle window resizing
   useEffect(() => {
     const handleResize = () => {
-      renderFrame(currentFrameIndexRef.current);
+      scheduleRender(currentFrameIndexRef.current);
     };
 
     window.addEventListener('resize', handleResize);
@@ -139,29 +191,32 @@ export default function ScrollyCanvas({
 
   return (
     <div className="fixed inset-0 h-screen w-full overflow-hidden bg-[#090d16] pointer-events-none z-0">
-      {/* Loading overlay while preloading sequence */}
-      {!isReady && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ opacity: loadedCount === frameCount ? 0 : 1 }}
-          transition={{ duration: 0.8 }}
-          className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#090d16] text-white"
-        >
-          <div className="relative mb-6 h-16 w-16">
-            <div className="absolute inset-0 rounded-full border-2 border-sky-500/20" />
-            <div className="absolute inset-0 rounded-full border-2 border-sky-400 border-t-transparent animate-spin" />
-          </div>
-          <div className="font-mono text-sm tracking-widest text-slate-400 uppercase">
-            Loading Assets {progressPercent}%
-          </div>
-          <div className="mt-4 h-1 w-48 overflow-hidden rounded-full bg-slate-800">
-            <div
-              className="h-full bg-gradient-to-r from-sky-400 to-blue-600 transition-all duration-200"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-        </motion.div>
-      )}
+      {/* Loading overlay while preloading full WebP sequence */}
+      <AnimatePresence>
+        {!isReady && (
+          <motion.div
+            key="loading-overlay"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#090d16] text-white pointer-events-auto"
+          >
+            <div className="relative mb-6 h-16 w-16">
+              <div className="absolute inset-0 rounded-full border-2 border-sky-500/20" />
+              <div className="absolute inset-0 rounded-full border-2 border-sky-400 border-t-transparent animate-spin" />
+            </div>
+            <div className="font-mono text-sm tracking-widest text-slate-400 uppercase">
+              Loading Assets {progressPercent}%
+            </div>
+            <div className="mt-4 h-1 w-48 overflow-hidden rounded-full bg-slate-800">
+              <div
+                className="h-full bg-gradient-to-r from-sky-400 to-blue-600 transition-all duration-200"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main HTML5 Canvas */}
       <canvas
@@ -195,3 +250,5 @@ export default function ScrollyCanvas({
     </div>
   );
 }
+
+
