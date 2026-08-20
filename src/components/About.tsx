@@ -31,7 +31,7 @@ export default function About() {
 
   // Animated stat counters on mount/scroll
   useEffect(() => {
-    const targets = [2, 5, 3];
+    const targets = [2, 5, 5];
     const duration = 1500;
     const steps = 30;
     const intervalTime = duration / steps;

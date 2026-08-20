@@ -20,7 +20,7 @@ const SKILL_CATEGORIES = [
     icon: Cloud,
     badge: 'Cloud Stack',
     skills: [
-      { name: 'AWS (EC2, S3, IAM, VPC)', level: 'Hands-on' },
+      { name: 'AWS', level: 'Hands-on' },
       { name: 'CloudFormation', level: 'Infrastructure' },
       { name: 'GitHub Actions', level: 'Automation' },
       { name: 'CI/CD Pipelines', level: 'Integration' },
