@@ -61,16 +61,24 @@ const PROJECTS: Project[] = [
     description:
       'Designed a highly available web infrastructure using EC2, Application Load Balancer (ALB), Auto Scaling Group, and Multi-AZ deployment with self-healing capabilities.',
     tech: ['AWS EC2', 'ALB', 'Auto Scaling', 'Launch Template', 'Multi-AZ', 'AWS VPC'],
+    githubUrl: 'https://github.com/ATHIS07?tab=repositories',
     terminalCommand: '$ aws autoscaling describe-auto-scaling-groups',
   },
   {
-    title: 'Personal Portfolio Website',
+    title: 'ALASKA — AI Chatbot',
     status: 'Completed',
     description:
-      'Building a responsive portfolio website to showcase resume, AWS learning journey, interactive scrollytelling, and project demonstrations.',
-    tech: ['Next.js 14', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Canvas API', 'GitHub Pages'],
-    githubUrl: 'https://github.com/ATHIS07/PersonalPortfolio/blob/main/index.html',
-    terminalCommand: '$ npm run build && git push origin main',
+      'A serverless AI chatbot built with React and Amazon Bedrock, using AWS Lambda and API Gateway to deliver real-time conversations with Gemma 3 4B IT.',
+    tech: [
+      'React',
+      'TypeScript',
+      'AWS Lambda',
+      'API Gateway',
+      'Amazon Bedrock',
+      'Gemma 3 4B IT',
+      'REST API',
+    ],
+    terminalCommand: '$ aws bedrock-runtime invoke-model --model-id gemma-3-4b-it',
   },
 ];
 
@@ -118,93 +126,101 @@ export default function Projects() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-          {PROJECTS.map((project, idx) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.12 }}
-            >
-              <TiltCard className="glass-card rounded-3xl border border-white/10 hover:border-sky-500/40 relative overflow-hidden group flex flex-col justify-between h-full p-5 sm:p-8 md:p-10">
-                {/* Interactive Terminal Header Bar */}
-                <div className="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-6">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-rose-500/80 group-hover:bg-rose-500 transition-colors" />
-                    <div className="h-3 w-3 rounded-full bg-amber-500/80 group-hover:bg-amber-500 transition-colors" />
-                    <div className="h-3 w-3 rounded-full bg-emerald-500/80 group-hover:bg-emerald-500 transition-colors" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+          {PROJECTS.map((project, idx) => {
+            const isSingleLast = PROJECTS.length % 2 !== 0 && idx === PROJECTS.length - 1;
+            return (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.12 }}
+                className={`h-full flex flex-col ${
+                  isSingleLast ? 'md:col-span-2 md:max-w-2xl md:mx-auto w-full' : 'w-full'
+                }`}
+              >
+                <TiltCard className="glass-card rounded-3xl border border-white/10 hover:border-sky-500/40 relative overflow-hidden group flex flex-col justify-between h-full p-5 sm:p-8 md:p-10 w-full">
+                  {/* Interactive Terminal Header Bar */}
+                  <div className="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-6">
+                    <div className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded-full bg-rose-500/80 group-hover:bg-rose-500 transition-colors" />
+                      <div className="h-3 w-3 rounded-full bg-amber-500/80 group-hover:bg-amber-500 transition-colors" />
+                      <div className="h-3 w-3 rounded-full bg-emerald-500/80 group-hover:bg-emerald-500 transition-colors" />
+                    </div>
+                    <TerminalTyper command={project.terminalCommand} />
                   </div>
-                  <TerminalTyper command={project.terminalCommand} />
-                </div>
 
-                <div className="relative z-10 flex-1 flex flex-col justify-between">
-                  <div>
-                    {/* Header Title & Status Alignment */}
-                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4 min-h-[56px]">
-                      <h3 className="text-xl md:text-2xl font-extrabold text-white group-hover:text-sky-300 transition-colors leading-tight">
-                        {project.title}
-                      </h3>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 font-mono text-[11px] font-semibold text-emerald-400 uppercase shrink-0 self-start mt-0.5 shadow-sm">
-                        <Activity className="h-3 w-3 text-emerald-400 animate-pulse" />
-                        {project.status}
-                      </span>
+                  <div className="relative z-10 flex-1 flex flex-col justify-between">
+                    <div>
+                      {/* Header Title & Status Alignment */}
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4 min-h-[56px]">
+                        <h3 className="text-xl md:text-2xl font-extrabold text-white group-hover:text-sky-300 transition-colors leading-tight">
+                          {project.title}
+                        </h3>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 font-mono text-[11px] font-semibold text-emerald-400 uppercase shrink-0 self-start mt-0.5 shadow-sm">
+                          <Activity className="h-3 w-3 text-emerald-400 animate-pulse" />
+                          {project.status}
+                        </span>
+                      </div>
+
+                      <p className="text-slate-300 text-sm md:text-base leading-relaxed font-normal mb-6 text-readable">
+                        {project.description}
+                      </p>
                     </div>
 
-                    <p className="text-slate-300 text-sm md:text-base leading-relaxed font-normal mb-6 text-readable min-h-[80px]">
-                      {project.description}
-                    </p>
+                    {project.note && (
+                      <div className="relative z-10 mb-6 p-3 rounded-xl bg-sky-500/10 border border-sky-500/25 text-sky-300 text-xs font-mono flex items-center gap-2 shadow-inner">
+                        <Sparkles className="h-4 w-4 text-sky-400 shrink-0" />
+                        <span>{project.note}</span>
+                      </div>
+                    )}
+
+                    <div className="flex flex-wrap items-center gap-2 mb-6 mt-auto min-h-[48px]">
+                      {project.tech.map((t) => (
+                        <span
+                          key={t}
+                          className="px-3 py-1 rounded-full bg-slate-900/90 border border-slate-800 font-mono text-xs text-slate-300 group-hover:border-slate-700 group-hover:text-white transition-all hover:scale-105"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2 mb-8 mt-auto min-h-[72px]">
-                    {project.tech.map((t) => (
-                      <span
-                        key={t}
-                        className="px-3 py-1 rounded-full bg-slate-900/90 border border-slate-800 font-mono text-xs text-slate-300 group-hover:border-slate-700 group-hover:text-white transition-all hover:scale-105"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {project.note && (
-                  <div className="relative z-10 my-3 p-3 rounded-xl bg-sky-500/10 border border-sky-500/25 text-sky-300 text-xs font-mono flex items-center gap-2 shadow-inner">
-                    <Sparkles className="h-4 w-4 text-sky-400 shrink-0" />
-                    <span>{project.note}</span>
-                  </div>
-                )}
-
-                <div className="relative z-10 pt-4 border-t border-slate-800/80 mt-auto min-h-[52px] flex flex-wrap items-center gap-3">
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={triggerConfetti}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-sky-500/40 text-xs font-mono font-semibold transition-all hover:scale-105 shadow-lg"
-                    >
-                      <Github className="h-4 w-4 text-sky-400" />
-                      <span>GitHub</span>
-                      <ExternalLink className="h-3 w-3" />
-                    </a>
+                  {(project.githubUrl || project.liveUrl) && (
+                    <div className="relative z-10 pt-4 border-t border-slate-800/80 mt-auto min-h-[52px] flex flex-wrap items-center gap-3">
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={triggerConfetti}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-sky-500/40 text-xs font-mono font-semibold transition-all hover:scale-105 shadow-lg"
+                        >
+                          <Github className="h-4 w-4 text-sky-400" />
+                          <span>GitHub</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      )}
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={triggerConfetti}
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:text-white hover:bg-sky-500/20 hover:border-sky-400 text-xs font-mono font-semibold transition-all hover:scale-105 shadow-lg"
+                        >
+                          <ExternalLink className="h-4 w-4 text-sky-400" />
+                          <span>Live Portfolio</span>
+                        </a>
+                      )}
+                    </div>
                   )}
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={triggerConfetti}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:text-white hover:bg-sky-500/20 hover:border-sky-400 text-xs font-mono font-semibold transition-all hover:scale-105 shadow-lg"
-                    >
-                      <ExternalLink className="h-4 w-4 text-sky-400" />
-                      <span>Live Portfolio</span>
-                    </a>
-                  )}
-                </div>
-              </TiltCard>
-            </motion.div>
-          ))}
+                </TiltCard>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
